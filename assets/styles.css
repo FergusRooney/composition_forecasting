@@ -1,0 +1,128 @@
+body {
+    margin: 0 0;
+    background-color: #f9fafb; /*#f2f2f2;*/
+    height: 100%;
+}
+
+html {
+    background-color: #f2f2f2;
+}
+
+.main {
+    padding: 20px 50px;
+}
+
+.navbar {
+    /*border-radius: 5px;
+    box-shadow: 2px 2px 2px lightgrey;
+    */
+    z-index: 2;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+    background-color: grey !important;
+}
+
+
+h2 {
+    color: black;
+    text-align: center;
+    /*margin: 5px 5px; */
+}
+
+.graphs-box {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+}
+
+.selector_pane {
+    margin-right: 20px;
+    padding-left: 10px;
+
+    background-color: #f9f9f9;
+
+    margin-top: 30px;
+    padding: 20px 30px;
+
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px lightgrey;
+}
+
+#map-graph {
+    margin-top: 20px;
+    border-radius: 5px;
+}
+/*
+.left-pane {
+    width: 100%;
+    height: 100%;
+    background-color: #f9f9f9;
+    color: black;
+    display:inline-block;
+    margin-top: 30px;
+}
+*/
+
+.col-6 .col-9{
+    background-color: #f2f2f2;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+.panel {
+    background-color: #f9f9f9;
+    margin: 30px 30px;
+    padding: 20px 30px;
+
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px lightgrey;
+}
+
+.image_selector_pane > div:nth-child(3) > img:nth-child(2) {
+    margin-top: 10px;
+    max-width: 370px;
+}
+.image_selector_pane {
+    max-width: 370px;
+}
+
+.default-pane {
+    color: black;
+    width: 100%;
+    display:inline-block;
+    background-color: #ffffff;
+
+    margin: 10px 10px;
+    padding: 10px 10px;
+
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px lightgrey;
+}
+
+.numeric-pane {
+    border: 1px solid grey;
+    background-color: lightgrey;
+    text-align: center;
+}
+
+.btn-primary{
+    background: #2196f3 !important;
+    margin: 10px 0px;
+}
+
+.btn-primary:focus {
+    box-shadow: 0 0 0 0.2rem grey !important;
+}
+
+#_dash-app-content {
+    background-color: #f2f2f2 !important;
+}
+
+.card {
+    background-color: #ffffff !important;
+}

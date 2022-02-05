@@ -1,0 +1,4 @@
+__pycache__/
+examples/
+venv/
+csv_access_tests.py
