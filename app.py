@@ -1,5 +1,6 @@
 import dash 
 import flask
+import gunicorn
 import dash_bootstrap_components as dbc
 
   
