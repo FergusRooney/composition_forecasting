@@ -1,6 +1,7 @@
-import dash_html_components as html
+from dash import html
+from dash import dcc
 import dash_bootstrap_components as dbc
-import dash_core_components as dcc 
+
 
 from components import left_pane, load_decomposition_chart, pie_chart_pane, image_selector_pane, explanation_tab, current_time_tab, real_bar_chart, reactive_bar_chart, df_info_tab, df_info_tab_collapse, load_chart_Q, load_chart_P, dd_error_info_tab_P, dd_error_info_tab_Q, pie_chart_pane_P, pie_chart_pane_Q,upload_data,upload_dropdown,upload_buttons,solar_forecast_pane, wind_forecast_pane,wind_solar_info_tab,forecast_button
 
