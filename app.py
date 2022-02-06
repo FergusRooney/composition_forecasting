@@ -1,12 +1,14 @@
 import dash 
 import flask
 #added here
+import dash
 from dash import html
 import dash_bootstrap_components as dbc
 from dash import dcc
 from dash.dependencies import Input, Output, State
+import gunicorn
 from layouts import load_decomposition_layout, welcome_layout, about_project_layout, load_forecast_layout, upload_layout
-
+import callbacks
 
   
 # Server side configs
@@ -18,6 +20,7 @@ app = dash.Dash(__name__,
 server = app.server
 app.title = "Demand-Response dashboard"
 ##added here
+
 NAVBAR_LOGO = "assets\logo_UoM_white.svg"
 
 # Navigation bar menu
