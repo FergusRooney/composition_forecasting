@@ -4,7 +4,7 @@ import dash_bootstrap_components as dbc
 from dash import dcc
 from dash.dependencies import Input, Output, State
 import gunicorn
-from app import app
+from app import app, server
 from layouts import load_decomposition_layout, welcome_layout, about_project_layout, load_forecast_layout, upload_layout
 import callbacks
 
