@@ -26,7 +26,7 @@ import tensorflow as tf
 import os
 print(os.getcwd())
 print(os.path.abspath(__file__))
-#MELTEMI_DF = pd.read_csv('gs:/data/MELTEMI_DF_dummy.csv', parse_dates=['date_time'], sep=';')
+MELTEMI_DF = pd.read_csv('/app/data/MELTEMI_DF_dummy.csv', parse_dates=['date_time'], sep=';')
 # MELTEMI_DD = pd.read_csv('app/data/MELTEMI_DD_dummy.csv', parse_dates=['date_time'], sep=";")
 # ANSRO_DF = pd.read_csv('data/ANSRO_DF_dummy.csv', parse_dates=['date_time'], sep=';')
 # ANSRO_DD = pd.read_csv('data/ANSRO_DD_dummy.csv', parse_dates=['date_time'], sep=";")
