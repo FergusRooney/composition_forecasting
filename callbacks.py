@@ -124,7 +124,7 @@ def toggle_collapse(n, is_open):
 )
 def updateSolarGraph( interval):
 
-    SOLAR_DUMMY = pd.read_excel('data\solar_Data\dummy_data.xlsx')
+    SOLAR_DUMMY = pd.read_excel('/app/data/solar_Data/dummy_data.xlsx')
     SOLAR_DUMMY = SOLAR_DUMMY.tail(SOLAR_DUMMY.shape[0] -1)
     solar_trace = []
 
