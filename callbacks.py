@@ -18,6 +18,7 @@ from datetime import datetime, timedelta
 import pandas as pd
 import pathlib
 from tensorflow import keras
+from keras import layers
 
 # Import TensorFlow:
 import tensorflow as tf
@@ -204,7 +205,15 @@ def updateSolarGraph( interval):
         )
     )
     return solar_chart
+@app.callback(
+    Output('forecast-htmldiv','children'),
+    Input('Forecast-Data-Button', 'n_clicks'),
+    prevent_initial_call=True
+)
+def forecast(clicks):
+    model = keras.models.load_model('data/modelTest')
 
+    return model.summary()
 
 
 
@@ -223,18 +232,15 @@ def trainNetworks(clicks):
         stats.append
     children = stats
 
-    model = tf.keras.Sequential([
-        tf.keras.layers.Dense(10, activation='relu'),
-        tf.keras.layers.Dense(10, activation='relu'),
-        tf.keras.layers.Dense(1)
-    ])
-
-    model.compile(optimizer='adam',
-                  loss=tf.keras.losses.BinaryCrossentropy(from_logits=True),
-                  metrics=['accuracy'])
-
-
-    model.save('data/modelTest')
+    model = keras.Sequential(
+        [
+            layers.Dense(2, activation="relu", name="layer1"),
+            layers.Dense(3, activation="relu", name="layer2"),
+            layers.Dense(4, name="layer3"),
+        ]
+    )
+    # Call model on a test input
+    x = tf.ones((3, 3)
     return children
 
 
