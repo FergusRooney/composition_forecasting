@@ -23,6 +23,9 @@ from keras import layers
 # Import TensorFlow:
 import tensorflow as tf
 
+from ANN_tests.files import read_data, lstm_data
+from sklearn.model_selection import train_test_split
+
 # Local data load dummies
 import os
 print(os.getcwd())
@@ -224,26 +227,62 @@ def forecast(clicks):
     prevent_initial_call=True
 )
 def trainNetworks(clicks):
-    print("clicked")
-    data = [pd.read_csv('/app/data/DD_data.csv', sep=";"), pd.read_csv('/app/data/solar_Data.csv', sep=";"),pd.read_csv('/app/data/solar_forecast.csv', sep=";"),pd.read_csv('/app/data/DD_forecast.csv', sep=";"),pd.read_csv('/app/data/DF_data.csv', sep=";"), pd.read_csv('/app/data/DF_forecast.csv', sep=";")]
-    stats =[html.P("AVG MAX  MIN STD")]
-    for x in data:
-        stats.append( html.P(str(round(x['real_power'].mean(), 3)) + " "+str(round(x['real_power'].max(), 3)) + " "+str(round(x['real_power'].min(), 3)) + " "+str(round(x['real_power'].std(), 3)),))
-        stats.append
-    children = stats
+    bartosz_lstm_tests()
 
-    model = keras.Sequential(
-        [
-            layers.Dense(2, activation="relu", name="layer1"),
-            layers.Dense(3, activation="relu", name="layer2"),
-            layers.Dense(4, name="layer3"),
-        ]
+    return "success"
+
+def bartosz_lstm_tests():
+
+    steps_num = 10
+    features_num = 2
+    files_to_read = ['/app/ANN_tests/total_P1000', '/app/ANN_tests/total_Q1000', '/app/ANN_tests/decomposition1000']
+    print("read in progress")
+    evidence, labels = read_data(files_to_read)
+    evidence, labels = lstm_data(evidence, labels, steps_num)
+    print("data read")
+
+    x_training, x_testing, y_training, y_testing = train_test_split(
+        evidence, labels, test_size=0.2
     )
-    # Call model on a test input
-    x = tf.ones((3, 3))
-    y = model(x)
+    x_testing = x_testing.reshape((x_testing.shape[0], x_testing.shape[1], features_num))
+    x_training = x_training.reshape((x_training.shape[0], x_training.shape[1], features_num))
 
-    return children
+    # for i in range(5):
+    #    print(evidence[i])
+
+    # Create a neural network
+    model = tf.keras.models.Sequential([
+
+        # Add a hidden layer with 8 units, with ReLU activation
+        # tf.keras.layers.LSTM(8, activation='relu', return_sequences=True, input_shape=(steps_num, features_num)),
+        tf.keras.layers.LSTM(32, activation='relu', input_shape=(steps_num, features_num), return_sequences=True),
+        tf.keras.layers.Dropout(0.4),
+        # tf.keras.layers.LSTM(8, activation='relu', return_sequences=True),
+
+        # tf.keras.layers.LSTM(8, activation='elu'),
+        # tf.keras.layers.Dropout(0.4),
+        tf.keras.layers.LSTM(32, activation='relu'),
+        tf.keras.layers.Dropout(0.4),
+
+        # tf.keras.layers.LSTM(8, activation='relu', input_shape=(steps_num, features_num)),
+        # tf.keras.layers.LSTM(8, activation='relu'),
+        # tf.keras.layers.Dropout(0.4),
+
+        # model.add(Dense(1)),
+        tf.keras.layers.Dense(6, activation="sigmoid")
+    ])
+    # Train neural network
+    model.compile(
+        optimizer="adam",
+        loss="MAE",
+        metrics=["MAE"]
+    )
+    model.fit(x_training, y_training, epochs=20)
+    # Evaluate how well model performs
+    model.evaluate(x_testing, y_testing, verbose=2)
+
+    model.save("test_model")
+
 
 
 @app.callback(Output('select_point_dropdown', 'value'),[Input('MELTEMI-choice', "n_clicks"), Input('ANSRO-choice', "n_clicks")])
