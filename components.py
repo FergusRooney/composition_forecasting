@@ -59,7 +59,8 @@ image_selector_pane = html.Div(className='image_selector_pane default-pane', chi
         id='select_point_dropdown',
         options=[
             {'label': 'Test Network', 'value': 'MELTEMI'},
-            {'label': 'ANSRO', 'value': 'ANSRO'},
+            {'label': 'BUS1', 'value': 'BUS1'},
+            {'label': 'BUS1', 'value': 'BUS1'},
         ],
         placeholder='Select network point',
     ),
@@ -89,32 +90,79 @@ upload_buttons = html.Div(
         html.Button('Upload', id='Upload-Data-Button', n_clicks=0),
         html.Div(id="upload_htmlDiv")
     ],
-
 )
+test_button = html.Div(
+    children=[
+        html.Button('Test', id='test-button', n_clicks=0),
+        html.Div(id="test-div")
+    ],
+)
+
+
+
 forecast_button = html.Div(children=[
     html.Button('Forecast', id='Forecast-Data-Button', n_clicks=0,
                 style={
                     'background-color': '#B5179E',
-                    'border': 'none',
+                    'width' : '180px',
+                    'padding' : '4px 0',
+
+                    'position': 'relative',
+                    'left' : '0%',
+                    'right' : '100%',
+                    'border-radius': '3px',
                     'color': 'white',
                     'font-size': '30px',
-                    'padding': '15px 32px',
+                    'min-width': '100px'
+                }),
+    html.Div(id='forecast-htmldiv', children=[]),
+    dcc.Store(id='prediction-store-dd', data=[], storage_type="local"),dcc.Store(id='prediction-store-df', data=[], storage_type="local"),
+    dcc.Store(id='data-in-store',data=[], storage_type="local"),
+    ]
+)
+
+dummyDiv= html.Div(id='dummy_div', children=[])
+
+delete_data_button = html.Div(children=[
+    html.Button('Delete data', id='delete-data-button', n_clicks=0,
+                style={
+                    'background-color': '#B5179E',
+                    'width' : '180px',
+                    'padding' : '4px 0',
+
+                    'position': 'relative',
+                    'left' : '0%',
+                    'right' : '100%',
+                    'border-radius': '3px',
+                    'color': 'white',
+                    'font-size': '30px',
                     'min-width': '100px'
                 }),
     html.Div(id='forecast-htmldiv', children=[])]
 )
+
+forecast_text_loading = html.Div(children=[],id='forecast_tag_loading')
+forecast_text_success = html.Div(children=[],id='forecast_tag_success')
+train_text_loading = html.Div(children=[],id='train_tag_loading')
+train_text_success = html.Div(children=[], id = 'train_tag_success')
+
 train_button = html.Div(
     html.Button('Train', id='Train-Data-Button', n_clicks=0,
                 style={
                     'background-color': '#B5179E',
-                    'border': 'none',
+                    'width': '180px',
+                    'padding': '4px 0',
+
+                    'position': 'relative',
+                    'left' : '0%',
+                    'right' : '100%',
+                    'border-radius': '3px',
                     'color': 'white',
                     'font-size': '30px',
-                    'padding': '15px 32px',
                     'min-width': '100px'
                 })
-
 )
+
 
 upload_dropdown = html.Div(children=[dcc.Dropdown(
     id='dropdown-upload',
@@ -132,6 +180,19 @@ upload_dropdown = html.Div(children=[dcc.Dropdown(
     ]
 )]
 )
+upload_dropdown_demand_decomposition = html.Div(children=[dcc.Dropdown(
+    id='dropdown-upload-DD',
+    options=[
+        {'label': 'Total P', 'value': 'total_P_new20'},
+        {'label': 'Total Q', 'value': 'total_Q_new20'},
+        {'label': 'Historical composition data', 'value': 'decomposition_new20'},
+    ]
+)]
+)
+
+
+
+
 load_decomposition_chart = html.Div(className='default-pane',
                                     children=[
                                         html.Div(className='chart-description',
@@ -180,6 +241,7 @@ load_chart_Q = html.Div(className='default-pane',
                                          dcc.Graph(id='load-graph-Q',
                                                    config={'displayModeBar': False, },
                                                    animate=True,
+
                                                    ),
 
                                          dcc.Interval(
@@ -269,7 +331,7 @@ pie_chart_pane_Q = html.Div(className='default-pane',
                                          children=[
                                              dcc.Graph(id='pie-chart-Q',
                                                        config={'displayModeBar': False, },
-                                                       animate=False,
+                                                       animate=True,
                                                        ),
 
                                              dcc.Interval(
@@ -281,10 +343,10 @@ pie_chart_pane_Q = html.Div(className='default-pane',
                                          ])
                             ])
 
-explanation_tab = html.Div(style={"marginLeft": 10},
+explanation_tab = html.Div(style={"marginLeft": 0,'width' : '180px'},
                            children=[
                                dbc.Button(
-                                   "Load Decomposition Legend",
+                                   "Load Composition Legend",
                                    id="legend-collapse-button",
                                    className="mb-3",
                                    color="primary",
@@ -361,45 +423,53 @@ df_reactive_info_tab = html.Div(className='default-pane2',
 
 dd_error_info_tab_P = html.Div(className='default-pane',
                                children=[
-
                                    html.H4("P Errors %"),
                                    html.Div(children=[
                                        html.Div('CTIM1'),
                                        html.Div(className='numeric-pane', id="p-ctim1-error"),
                                    ],
-                                       style={'display': 'inline-block', 'margin': 5}),
+                                       style={'display': 'inline-block', 'margin': 1,  'font-size': '21px'}),
 
                                    html.Div(children=[
                                        html.Div('QTIM1'),
                                        html.Div(className='numeric-pane', id="p-qtim1-error"),
                                    ],
-                                       style={'display': 'inline-block', 'margin': 5}),
+                                       style={'display': 'inline-block', 'margin': 1, 'font-size': '21px'}),
 
                                    html.Div(children=[
                                        html.Div("RC"),
                                        html.Div(className='numeric-pane', id="p-rc-error"),
                                    ],
-                                       style={'display': 'inline-block', 'margin': 5}),
+                                       style={'display': 'inline-block', 'margin': 1, 'font-size': '21px'}),
+
                                    html.Br(),
                                    html.Div(children=[
                                        html.Div("RUC"),
                                        html.Div(className='numeric-pane', id="p-ruc-error"),
                                    ],
-                                       style={'display': 'inline-block', 'margin': 5}),
+                                       style={'display': 'inline-block', 'margin': 1, 'font-size': '21px'}),
 
                                    html.Div(children=[
                                        html.Div("SMPS"),
                                        html.Div(className='numeric-pane', id="p-smps-error"),
                                    ],
-                                       style={'display': 'inline-block', 'margin': 5}),
+                                       style={'display': 'inline-block', 'margin': 1,  'font-size': '21px'}),
+
 
                                    html.Div(children=[
                                        html.Div("L"),
                                        html.Div(className='numeric-pane', id="p-l-error"),
                                    ],
-                                       style={'display': 'inline-block', 'margin': 5}),
+                                       style={'display': 'inline-block', 'margin': 1, 'font-size': '21px'}),
+                                   html.Div(
+                                        children=[
+                                            html.Div("Pc"),
+                                            html.Div(className='numeric-pane', id="p-controllable-error"),
+                                        ],
+                                       style={'display': 'inline-block', 'margin': 1, 'font-size': '21px'},
+                                   ),
 
-                               ])
+                               ], style = {'height':'560px'})
 wind_solar_info_tab = html.Div(className='default-pane',
                                children=[
 
@@ -426,45 +496,52 @@ dd_error_info_tab_Q = html.Div(className='default-pane',
                                        html.Div('CTIM1'),
                                        html.Div(className='numeric-pane', id="q-ctim1-error"),
                                    ],
-                                       style={'display': 'inline-block', 'margin': 5}),
+                                       style={'display': 'inline-block', 'margin': 1, 'font-size': '21px'},),
 
                                    html.Div(children=[
                                        html.Div('QTIM1'),
                                        html.Div(className='numeric-pane', id="q-qtim1-error"),
                                    ],
-                                       style={'display': 'inline-block', 'margin': 5}),
+                                       style={'display': 'inline-block', 'margin': 1, 'font-size': '21px'},),
 
                                    html.Div(children=[
                                        html.Div("RC"),
                                        html.Div(className='numeric-pane', id="q-rc-error"),
                                    ],
-                                       style={'display': 'inline-block', 'margin': 5}),
+                                       style={'display': 'inline-block', 'margin': 1, 'font-size': '21px'},),
                                    html.Br(),
                                    html.Div(children=[
                                        html.Div("RUC"),
                                        html.Div(className='numeric-pane', id="q-ruc-error"),
                                    ],
-                                       style={'display': 'inline-block', 'margin': 5}),
+                                       style={'display': 'inline-block', 'margin': 1, 'font-size': '21px'},),
 
                                    html.Div(children=[
                                        html.Div("SMPS"),
                                        html.Div(className='numeric-pane', id="q-smps-error"),
                                    ],
-                                       style={'display': 'inline-block', 'margin': 5}),
+                                       style={'display': 'inline-block', 'margin': 1, 'font-size': '21px'},),
 
                                    html.Div(children=[
                                        html.Div("L"),
                                        html.Div(className='numeric-pane', id="q-l-error"),
                                    ],
-                                       style={'display': 'inline-block', 'margin': 5}),
-
-                               ])
+                                       style={'display': 'inline-block', 'margin': 1, 'font-size': '21px'},),
+                                    html.Div(
+                                        children=[
+                                            html.Div("Qc"),
+                                            html.Div(className='numeric-pane', id="q-controllable-error"),
+                                        ],
+                                       style={'display': 'inline-block', 'margin': 1, 'font-size': '21px'},
+                                   ),
+                               ], style = {'height':'560px'})
 
 df_info_tab = html.Div(children=[
     df_active_info_tab,
     html.Hr(),
     df_reactive_info_tab,
 ])
+
 
 df_info_tab_collapse = html.Div(style={"marginLeft": 10},
                                 children=[
@@ -496,7 +573,6 @@ real_bar_chart = html.Div(className='real-bar-description default-pane',
                                   interval=5000,
                                   n_intervals=0
                               ),
-
                           ])
 
 reactive_bar_chart = html.Div(className='reactive-bar-description default-pane',

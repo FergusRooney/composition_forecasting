@@ -9,7 +9,7 @@ html {
 }
 
 .main {
-    padding: 20px 50px;
+    padding: 5px 10px;
 }
 
 .navbar {
@@ -54,7 +54,7 @@ h2 {
 }
 
 #map-graph {
-    margin-top: 20px;
+    margin-top: 5px;
     border-radius: 5px;
 }
 /*
@@ -76,8 +76,8 @@ h2 {
 
 .panel {
     background-color: #f9f9f9;
-    margin: 30px 30px;
-    padding: 20px 30px;
+    margin: 10px 20px;
+    padding: 10px 20px;
 
     border-radius: 5px;
     box-shadow: 2px 2px 2px lightgrey;
@@ -97,8 +97,8 @@ h2 {
     display:inline-block;
     background-color: #ffffff;
 
-    margin: 10px 10px;
-    padding: 10px 10px;
+    margin: 5px 5px;
+    padding: 5px 5px;
 
     border-radius: 5px;
     box-shadow: 2px 2px 2px lightgrey;

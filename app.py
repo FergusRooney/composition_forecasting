@@ -1,6 +1,8 @@
 import flask
 import dash
-  
+
+
+
 # Server side configs
 server = flask.Flask(__name__) # define flask app.server
 app = dash.Dash(__name__,

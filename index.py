@@ -6,17 +6,10 @@ from dash import dcc
 from dash.dependencies import Input, Output, State
 import gunicorn
 from app import app, server
-from layouts import load_decomposition_layout, welcome_layout, about_project_layout, load_forecast_layout, upload_layout
+from layouts import load_decomposition_layout, welcome_layout, about_project_layout, load_forecast_layout, upload_layout, future_work_layout
 import callbacks
 
-
-
-
-
-
-
 NAVBAR_LOGO = "assets\logo_UoM_white.svg"
-
 
 # Navigation bar menu
 navbar = dbc.Navbar(style={"height":"80px"},
@@ -94,8 +87,8 @@ sidebar = html.Div(
         html.Hr(),
         dbc.Nav(
             [
-                dbc.NavLink("Generation and load forecast", href="/load-decomposition", id="page-1-link"),
-                dbc.NavLink("Upload Files", href="/load-prediction", id="page-2-link"),
+                dbc.NavLink("Load composition", href="/load-decomposition", id="page-1-link"),
+                dbc.NavLink("Future work", href="/load-prediction", id="page-2-link"),
                 dbc.NavLink("Custom View", href="/custom-view", id="page-3-link"),
             ],
             vertical=True,
@@ -131,7 +124,8 @@ app.layout = html.Div(
     [Input("btn_sidebar", "n_clicks")],
     [
         State("side_click", "data"),
-    ]
+    ],
+
 )
 def toggle_sidebar(n, nclick):
     if n:
@@ -144,10 +138,12 @@ def toggle_sidebar(n, nclick):
             content_style = CONTENT_STYLE_SIDEBAR
             cur_nclick = "SHOW"
     else:
-        sidebar_style = SIDEBAR_STYLE
-        content_style = CONTENT_STYLE_SIDEBAR
-        cur_nclick = 'SHOW'
-
+        # sidebar_style = SIDEBAR_STYLE
+        # content_style = CONTENT_STYLE_SIDEBAR
+        # cur_nclick = 'SHOW'
+        sidebar_style = SIDEBAR_HIDDEN
+        content_style = CONTENT_STYLE_NO_SIDEBAR
+        cur_nclick = "HIDDEN"
     return sidebar_style, content_style, cur_nclick
 
 @app.callback(
@@ -172,7 +168,7 @@ def render_page_content(pathname):
     elif pathname == '/load-decomposition':
          return load_decomposition_layout
     elif pathname == '/load-prediction':
-         return upload_layout
+         return future_work_layout
     elif pathname == '/custom-view':
          return "Upcoming feature for custom view dashboard"
     elif pathname == '/about-project':
